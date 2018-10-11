@@ -14,6 +14,8 @@ namespace Capstone
 
             MainMenu menu = new MainMenu(vm);
 
+            menu.Display();
+
         }
     }
 }

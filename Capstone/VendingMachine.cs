@@ -75,13 +75,37 @@ namespace Capstone
 
         public void PrintAllItemsInfo()
         {
-            foreach (KeyValuePair<string, VendingMachineItem> kvp in CurrentStock)
+            foreach (KeyValuePair<string, Slot> kvp in CurrentStock)
             {
-                if (kvp.Key
-                VendingMachineItem item = kvp.Value;
-                Console.WriteLine(kvp.Key + " " + item.ProductName + " " + item.Price + " " + item.Type);
+                if (kvp.Value.SlotStock == 0)
+                {
+                    Console.WriteLine($"{kvp.Key} {kvp.Value.SlotItem.ProductName} {kvp.Value.SlotItem.Price} {kvp.Value.SlotItem.Type} SOLD OUT ");
+                }
+                else
+                {
+                    Console.WriteLine($"{kvp.Key} {kvp.Value.SlotItem.ProductName} {kvp.Value.SlotItem.Price} {kvp.Value.SlotItem.Type} {kvp.Value.SlotStock}");
+                }
             }
         }
+
+        public void FeedMoney()
+        {
+            string input = "";
+            int moneyFed = 0;
+            while (input != "Q")
+            {
+
+
+                Console.WriteLine("Please enter the amount of money to feed ");
+                Console.WriteLine("1, 2, 5, 10 or enter Q when finished");
+                Console.Write("Enter your selection: ");
+                input = Console.ReadLine();
+                if (input != "Q")
+                {
+                    moneyFed += int.Parse(input); // exception 
+                }
+            }
+            Balance = moneyFed;
 
        
     }

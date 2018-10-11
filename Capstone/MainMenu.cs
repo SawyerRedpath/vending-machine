@@ -33,8 +33,8 @@ namespace Capstone
                 }
                 else if (input == "2")
                 {
-                    Submenu1CLI submenu = new Submenu1CLI();
-                    submenu.Display();
+                    //Submenu1CLI submenu = new Submenu1CLI();
+                    //submenu.Display();
                 }
                 else if (input == "Q")
                 {
@@ -52,17 +52,11 @@ namespace Capstone
         }
         private void PrintHeader()
         {
-            Console.WriteLine("Vend-O-Matic 500 /nWelcome!");
+            Console.WriteLine("Vend-O-Matic 500");
+            Console.WriteLine("Welcome!");
         }
 
-        private void DisplayItemInfo()
-        {
-            foreach (KeyValuePair<string, VendingMachineItem> kvp in vm.CurrentStock)
-            {
-                VendingMachineItem item = kvp.Value;
-                Console.WriteLine(kvp.Key + " " + item.ProductName + " " + item.Price + " " + item.Type);
-            }
-        }
+        
 
     }
 }
