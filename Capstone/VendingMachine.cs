@@ -48,23 +48,23 @@ namespace Capstone
             }
         }
 
-        public void SelectProduct()
+        public string SelectProduct()
         {
             string slotSelection = "";
             do
             {
                 Console.WriteLine("Please enter your selections slot index. ");
-                Console.WriteLine("Or enter Q to return to previous menu");
+                Console.WriteLine("Or enter Q to return to the previous menu");
                 Console.WriteLine("Enter selection: ");
                 slotSelection = Console.ReadLine().ToUpper();
-                
+
                 if (slotSelection == "Q")
                 {
                     break;
                 }
 
                 verifyProductCodeExists(slotSelection);
-                if(verifyProductCodeExists(slotSelection) == false)
+                if (!verifyProductCodeExists(slotSelection))
                 {
                     Console.WriteLine("Invalid selection!");
                 }
@@ -73,38 +73,29 @@ namespace Capstone
                     verifyProductNotSoldOut(slotSelection);
                 }
             } while (!verifyProductCodeExists(slotSelection) && !verifyProductNotSoldOut(slotSelection));
-
-            
-
-
+            //VendingMachineItem item = CurrentStock[slotSelection].SlotItem;
+            //return  item;
+            return slotSelection;
         }
 
         public bool verifyProductNotSoldOut(string slotSelection)
         {
-            foreach (KeyValuePair<string, Slot> kvp in CurrentStock)
+            if (CurrentStock.ContainsKey(slotSelection))
             {
-                if (kvp.Key == slotSelection)
+                if (CurrentStock[slotSelection].SlotStock > 0)
                 {
-                    if (kvp.Value.SlotStock > 0)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-
             return false;
         }
 
         public bool verifyProductCodeExists(string slotSelection)
         {
-            foreach (KeyValuePair<string, Slot> kvp in CurrentStock)
+            if (CurrentStock.ContainsKey(slotSelection))
             {
-                if (slotSelection == kvp.Key)
-                {
-                    return true;
-                }
+                return true;
             }
-
             return false;
         }
 
@@ -168,8 +159,15 @@ namespace Capstone
                 }
             }
             Balance = moneyFed;
+        }
 
-       
+        public void Dispense(string item)
+        {
+            // We will decrement the item stock by 1
+            CurrentStock[item].SlotStock--;
+            // We will decrement the balance by item price
+            Balance -= CurrentStock[item].SlotItem.Price;
+        }
     }
 
     

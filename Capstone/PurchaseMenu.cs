@@ -33,9 +33,8 @@ namespace Capstone
                 else if (input == "2")
                 {
                     Console.WriteLine(""); // Selecting Product
-                    vm.SelectProduct();
-                    // add a dispense method here and update balance
-
+                    string item = vm.SelectProduct();
+                    vm.Dispense(item);
                 }
                 else if (input == "3")
                 {
@@ -50,7 +49,7 @@ namespace Capstone
                 {
                     Console.WriteLine("Please try again");
                 }
-
+                
                 Console.ReadLine();
             }
         }

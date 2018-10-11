@@ -33,8 +33,8 @@ namespace Capstone
                 }
                 else if (input == "2")
                 {
-                    //Submenu1CLI submenu = new Submenu1CLI();
-                    //submenu.Display();
+                    PurchaseMenu pm = new PurchaseMenu(vm);
+                    pm.Display();
                 }
                 else if (input == "Q")
                 {
