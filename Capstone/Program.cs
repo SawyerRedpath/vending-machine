@@ -7,16 +7,13 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-            // Testing the stock vending machine method
+            //Testing the stock vending machine method
 
-            //VendingMachine vm = new VendingMachine();
-            //vm.StockVendingMachine("vendingmachine.csv");
+            VendingMachine vm = new VendingMachine();
+            vm.StockVendingMachine("vendingmachine.csv");
 
-            //foreach (KeyValuePair<string, VendingMachineItem> kvp in vm.CurrentStock)
-            //{
-            //    VendingMachineItem item = kvp.Value;
-            //    Console.WriteLine(kvp.Key + " " + item.ProductName + " " + item.Price + " " + item.Type );
-            //}
+            MainMenu menu = new MainMenu(vm);
+
         }
     }
 }
