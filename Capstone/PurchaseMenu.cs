@@ -6,6 +6,11 @@ namespace Capstone
 {
     public class PurchaseMenu
     {
+        private VendingMachine vm;
+        public PurchaseMenu(VendingMachine vm)
+        {
+            this.vm = vm;
+        }
         public void Display()
         {
             while (true)
@@ -23,10 +28,13 @@ namespace Capstone
                 if (input == "1")
                 {
                     Console.WriteLine(""); // Feeding Money
+                    vm.FeedMoney();
                 }
                 else if (input == "2")
                 {
                     Console.WriteLine(""); // Selecting Product
+                    vm.SelectProduct();
+                    // add a dispense method here and update balance
 
                 }
                 else if (input == "3")

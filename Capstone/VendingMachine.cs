@@ -48,6 +48,66 @@ namespace Capstone
             }
         }
 
+        public void SelectProduct()
+        {
+            string slotSelection = "";
+            do
+            {
+                Console.WriteLine("Please enter your selections slot index. ");
+                Console.WriteLine("Or enter Q to return to previous menu");
+                Console.WriteLine("Enter selection: ");
+                slotSelection = Console.ReadLine().ToUpper();
+                
+                if (slotSelection == "Q")
+                {
+                    break;
+                }
+
+                verifyProductCodeExists(slotSelection);
+                if(verifyProductCodeExists(slotSelection) == false)
+                {
+                    Console.WriteLine("Invalid selection!");
+                }
+                else
+                {
+                    verifyProductNotSoldOut(slotSelection);
+                }
+            } while (!verifyProductCodeExists(slotSelection) && !verifyProductNotSoldOut(slotSelection));
+
+            
+
+
+        }
+
+        public bool verifyProductNotSoldOut(string slotSelection)
+        {
+            foreach (KeyValuePair<string, Slot> kvp in CurrentStock)
+            {
+                if (kvp.Key == slotSelection)
+                {
+                    if (kvp.Value.SlotStock > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool verifyProductCodeExists(string slotSelection)
+        {
+            foreach (KeyValuePair<string, Slot> kvp in CurrentStock)
+            {
+                if (slotSelection == kvp.Key)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void GiveChange()
         {
             int quartersDue = 0;
@@ -94,15 +154,17 @@ namespace Capstone
             int moneyFed = 0;
             while (input != "Q")
             {
-
-
                 Console.WriteLine("Please enter the amount of money to feed ");
                 Console.WriteLine("1, 2, 5, 10 or enter Q when finished");
                 Console.Write("Enter your selection: ");
-                input = Console.ReadLine();
+                input = Console.ReadLine().ToUpper();
                 if (input != "Q")
                 {
                     moneyFed += int.Parse(input); // exception 
+                }
+                else
+                {
+                    break;
                 }
             }
             Balance = moneyFed;
