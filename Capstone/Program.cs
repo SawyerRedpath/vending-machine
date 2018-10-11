@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Capstone
 {
@@ -6,7 +7,16 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            // Testing the stock vending machine method
+
+            //VendingMachine vm = new VendingMachine();
+            //vm.StockVendingMachine("vendingmachine.csv");
+
+            //foreach (KeyValuePair<string, VendingMachineItem> kvp in vm.CurrentStock)
+            //{
+            //    VendingMachineItem item = kvp.Value;
+            //    Console.WriteLine(kvp.Key + " " + item.ProductName + " " + item.Price + " " + item.Type );
+            //}
         }
     }
 }
