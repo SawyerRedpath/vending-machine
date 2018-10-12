@@ -82,7 +82,8 @@ namespace Capstone
                         Customer customer = new Customer();
                         if (itemToConsume != null)
                         {
-                            customer.Consume(itemToConsume.Type);
+                            string result = customer.Consume(itemToConsume.Type);
+                            Console.WriteLine(result);
                             Console.WriteLine();
                         }
 

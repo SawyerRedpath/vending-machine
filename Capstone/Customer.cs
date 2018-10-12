@@ -7,24 +7,26 @@ namespace Capstone
     public class Customer
     {
 
-        public void Consume(string itemType)
+        public string Consume(string itemType)
         {
+            string result = "";
             if(itemType == "Chip")
             {
-                Console.WriteLine("Crunch, Crunch, Yum! ");
+                result = "Crunch, Crunch, Yum! ";
             }
             else if (itemType == "Candy")
             {
-                Console.WriteLine("Munch, Munch, Yum! ");
+                result = "Munch, Munch, Yum! ";
             }
             else if (itemType == "Drink")
             {
-                Console.WriteLine("Glug, Glug, Yum! ");
+                result = "Glug, Glug, Yum! ";
             }
             else if (itemType == "Gum")
             {
-                Console.WriteLine("Chew, Chew, Yum! ");
+                result = "Chew, Chew, Yum! ";
             }
+            return result;
         }
     }
 }
