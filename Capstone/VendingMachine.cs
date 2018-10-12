@@ -158,15 +158,15 @@ namespace Capstone
                     break;
                 }
             }
-            Balance = moneyFed;
+            Balance += moneyFed;
         }
 
-        public void Dispense(string item)
+        public void Dispense(string slotID)
         {
             // We will decrement the item stock by 1
-            CurrentStock[item].SlotStock--;
+            CurrentStock[slotID].SlotStock--;
             // We will decrement the balance by item price
-            Balance -= CurrentStock[item].SlotItem.Price;
+            Balance -= CurrentStock[slotID].SlotItem.Price;
         }
     }
 
