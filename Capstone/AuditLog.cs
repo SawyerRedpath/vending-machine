@@ -8,27 +8,10 @@ namespace Capstone
     public class AuditLog
     {
         private const string logFile = "Log.txt";
-        private string lineToPrint = "";
-        private VendingMachine vm;
 
-        public void PrintAuditLine(string transactionType, string slotID, decimal moneyFed)
-        {
-            //string lineText = "";
-            //if(transactionType == "FEED MONEY:")
-            //{
-            //    // Set line to appropriate for feed money
-            //    lineText = $"{DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt")} {transactionType.PadRight(18)} {";
-            //}
-            //else if (transactionType == "Dispense")
-            //{
-            //    // Set line to appropriate for dispense item
-            //}
-            //else if (transactionType == "GIVE CHANGE:")
-            //{
-            //    // Set line to appropriate for give change
-            //}
-        }
-        
+        private string lineToPrint = "";
+
+        private VendingMachine vm;
 
         public void PrintFeedMoneyLine (decimal startingBalance)
         {

@@ -22,6 +22,8 @@ namespace Capstone
         /// </summary>
         public Dictionary<string, Slot> CurrentStock = new Dictionary<string, Slot>();
 
+        private AuditLog WriteLog;
+
         public void StockVendingMachine(string fileName)
         {
             //Read through fileName file
@@ -101,6 +103,7 @@ namespace Capstone
 
         public void GiveChange()
         {
+            decimal startingBalance = Balance;
             int quartersDue = 0;
             int dimesDue = 0;
             int nickelsDue = 0;
@@ -121,7 +124,7 @@ namespace Capstone
             }
             Console.WriteLine($"Here is your change: {quartersDue} Quarters, {dimesDue} Dimes, {nickelsDue} Nickels");
 
-
+            WriteLog.PrintGiveChangeLine(startingBalance);
         }
 
         public void PrintAllItemsInfo()
@@ -143,6 +146,7 @@ namespace Capstone
         {
             string input = "";
             int moneyFed = 0;
+            decimal startingBalance = 0.00M;
             while (input != "Q")
             {
                 Console.WriteLine("Please enter the amount of money to feed ");
@@ -151,22 +155,26 @@ namespace Capstone
                 input = Console.ReadLine().ToUpper();
                 if (input != "Q")
                 {
+                    startingBalance = Balance;
                     moneyFed += int.Parse(input); // exception 
+                    Balance += moneyFed;
+                    WriteLog.PrintFeedMoneyLine(startingBalance);
                 }
                 else
                 {
                     break;
                 }
             }
-            Balance += moneyFed;
         }
 
         public void Dispense(string slotID)
         {
+            decimal startingBalance = Balance;
             // We will decrement the item stock by 1
             CurrentStock[slotID].SlotStock--;
             // We will decrement the balance by item price
             Balance -= CurrentStock[slotID].SlotItem.Price;
+            WriteLog.PrintDispenseItemLine(startingBalance, slotID);
         }
     }
 
