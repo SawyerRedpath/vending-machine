@@ -50,9 +50,12 @@ namespace Capstone
             }
         }
 
-        public string SelectProduct()
+        public (string, bool, bool) SelectProduct()
         {
             string slotSelection = "";
+            bool enoughMoney = true;
+            bool notSoldOut = false;
+            
             do
             {
                 Console.WriteLine("Please enter your selections slot index. ");
@@ -72,16 +75,25 @@ namespace Capstone
                 }
                 else
                 {
-                    verifyProductNotSoldOut(slotSelection);
+                    notSoldOut = verifyProductNotSoldOut(slotSelection);
                 }
-                if (Balance < CurrentStock[slotSelection].SlotItem.Price)
+                
+
+                if (verifyProductCodeExists(slotSelection))
                 {
-                    Console.WriteLine($"{CurrentStock[slotSelection].SlotItem.ProductName}: ${CurrentStock[slotSelection].SlotItem.Price}. Please insert ${CurrentStock[slotSelection].SlotItem.Price - Balance}");
+                    if (  Balance < CurrentStock[slotSelection].SlotItem.Price )
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine($"{CurrentStock[slotSelection].SlotItem.ProductName}: ${CurrentStock[slotSelection].SlotItem.Price}. Please insert ${CurrentStock[slotSelection].SlotItem.Price - Balance}");
+                        enoughMoney = false;
+                        Console.WriteLine();
+                    }
                 }
-            } while (!verifyProductCodeExists(slotSelection) && !verifyProductNotSoldOut(slotSelection) && (Balance < CurrentStock[slotSelection].SlotItem.Price));
+
+            } while (!verifyProductCodeExists(slotSelection) ||  (Balance < CurrentStock[slotSelection].SlotItem.Price));
             //VendingMachineItem item = CurrentStock[slotSelection].SlotItem;
             //return  item;
-            return slotSelection;
+            return (slotSelection, enoughMoney, notSoldOut);
         }
 
         public bool verifyProductNotSoldOut(string slotSelection)
@@ -151,22 +163,24 @@ namespace Capstone
             string input = "";
             int moneyFed = 0;
             decimal startingBalance = 0.00M;
-            while (input != "Q")
+            while (input.ToUpper() != "Q")
             {
                 Console.WriteLine("Please enter the amount of money to feed ");
                 Console.WriteLine("1, 2, 5, 10 or enter Q when finished");
                 Console.Write("Enter your selection: ");
                 input = Console.ReadLine().ToUpper();
-                if (input != "Q")
+                if (input != "Q" && IsDigitsOnly(input) == true && (int.Parse(input) == 1 || int.Parse(input) == 2 || int.Parse(input) == 5 || int.Parse(input) == 10)  )
                 {
                     startingBalance = Balance;
-                    moneyFed += int.Parse(input); // exception 
+                    moneyFed += int.Parse(input); 
                     Balance += moneyFed;
                     WriteLog.PrintFeedMoneyLine(vm, startingBalance, Balance);
                 }
                 else
                 {
-                    break;
+                    Console.WriteLine();
+                    Console.WriteLine("Invalid input, machine accepts 1, 2, 5, or 10");
+                    Console.WriteLine();
                 }
             }
         }
@@ -179,6 +193,17 @@ namespace Capstone
             // We will decrement the balance by item price
             Balance -= CurrentStock[slotID].SlotItem.Price;
             WriteLog.PrintDispenseItemLine(vm, startingBalance, slotID);
+        }
+
+        public bool IsDigitsOnly(string str)
+        {
+            foreach (char c in str)
+            {
+                if (c < '0' || c > '9')
+                    return false;
+            }
+
+            return true;
         }
     }
 

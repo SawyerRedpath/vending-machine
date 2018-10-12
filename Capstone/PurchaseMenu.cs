@@ -7,7 +7,8 @@ namespace Capstone
     public class PurchaseMenu
     {
         private VendingMachine vm;
-        private Customer Customer = new Customer();
+        // private Customer Customer = new Customer();
+
         private VendingMachineItem itemToConsume;
 
         public PurchaseMenu(VendingMachine vm)
@@ -32,21 +33,66 @@ namespace Capstone
                 {
                     Console.WriteLine(""); // Feeding Money
                     vm.FeedMoney(vm);
+                    Console.Clear();
                 }
                 else if (input == "2")
                 { 
                     Console.WriteLine(""); // Selecting Product
-                    string slotID = vm.SelectProduct();
-                    itemToConsume = vm.CurrentStock[slotID].SlotItem;
-                    vm.Dispense(vm, slotID);
+                    (string slotID, bool enoughMoney, bool notSoldOut) = vm.SelectProduct();
+                    if (enoughMoney && slotID != "Q" && notSoldOut) 
+                    {
+                        itemToConsume = vm.CurrentStock[slotID].SlotItem;
+                        vm.Dispense(vm, slotID);
+                        Console.WriteLine($"{vm.CurrentStock[slotID].SlotItem.ProductName} dispensing now . . .");
+                        System.Threading.Thread.Sleep(3000);
+                    }
+                    if (!notSoldOut)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Item is sold out!");
+                        System.Threading.Thread.Sleep(2000);
+                    }
+                      
+                    Console.Clear();
                 }
+
                 else if (input == "3")
                 {
-                    
-                    Console.WriteLine(""); // Finishing Transaction
-                    vm.GiveChange(vm);
-                    Customer.Consume(itemToConsume.Type);
+                    if (vm.Balance == 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Transaction Cancelled");
+                        Console.WriteLine();
 
+                        System.Threading.Thread.Sleep(1000);
+
+                        Console.WriteLine($"Returning to main menu now . . .");
+
+                        System.Threading.Thread.Sleep(2000);
+                        Console.Clear();
+
+                    }
+                    else
+                    {
+                        Console.WriteLine(""); // Finishing Transaction
+                        vm.GiveChange(vm);
+                        Console.WriteLine();
+
+                        System.Threading.Thread.Sleep(1500);
+                        Customer customer = new Customer();
+                        if (itemToConsume != null)
+                        {
+                            customer.Consume(itemToConsume.Type);
+                            Console.WriteLine();
+                        }
+
+                        System.Threading.Thread.Sleep(2000);
+
+                        Console.WriteLine($"Returning to main menu now . . .");
+
+                        System.Threading.Thread.Sleep(3500);
+                        Console.Clear();
+                    }
                 }
                 
                 else if (input.ToUpper() == "Q")
@@ -59,7 +105,7 @@ namespace Capstone
                     Console.WriteLine("Please try again");
                 }
                 
-                Console.ReadLine();
+
             }
         }
     }

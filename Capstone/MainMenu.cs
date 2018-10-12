@@ -46,8 +46,6 @@ namespace Capstone
                     Console.WriteLine("Please try again");
                 }
 
-                Console.ReadLine();
-                Console.Clear();
             }
         }
         private void PrintHeader()

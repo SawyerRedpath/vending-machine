@@ -6,6 +6,7 @@ namespace Capstone
 {
     public class Customer
     {
+
         public void Consume(string itemType)
         {
             if(itemType == "Chip")
