@@ -22,7 +22,7 @@ namespace Capstone
         /// </summary>
         public Dictionary<string, Slot> CurrentStock = new Dictionary<string, Slot>();
 
-        private AuditLog WriteLog;
+        private AuditLog WriteLog = new AuditLog();
 
         public void StockVendingMachine(string fileName)
         {
@@ -74,7 +74,11 @@ namespace Capstone
                 {
                     verifyProductNotSoldOut(slotSelection);
                 }
-            } while (!verifyProductCodeExists(slotSelection) && !verifyProductNotSoldOut(slotSelection));
+                if (Balance < CurrentStock[slotSelection].SlotItem.Price)
+                {
+                    Console.WriteLine($"{CurrentStock[slotSelection].SlotItem.ProductName}: ${CurrentStock[slotSelection].SlotItem.Price}. Please insert ${CurrentStock[slotSelection].SlotItem.Price - Balance}");
+                }
+            } while (!verifyProductCodeExists(slotSelection) && !verifyProductNotSoldOut(slotSelection) && (Balance < CurrentStock[slotSelection].SlotItem.Price));
             //VendingMachineItem item = CurrentStock[slotSelection].SlotItem;
             //return  item;
             return slotSelection;
@@ -101,7 +105,22 @@ namespace Capstone
             return false;
         }
 
-        public void GiveChange()
+        public void PrintAllItemsInfo()
+        {
+            foreach (KeyValuePair<string, Slot> kvp in CurrentStock)
+            {
+                if (kvp.Value.SlotStock == 0)
+                {
+                    Console.WriteLine($"{kvp.Key} {kvp.Value.SlotItem.ProductName} {kvp.Value.SlotItem.Price} {kvp.Value.SlotItem.Type} SOLD OUT ");
+                }
+                else
+                {
+                    Console.WriteLine($"{kvp.Key} {kvp.Value.SlotItem.ProductName} {kvp.Value.SlotItem.Price} {kvp.Value.SlotItem.Type} {kvp.Value.SlotStock}");
+                }
+            }
+        }
+
+        public void GiveChange(VendingMachine vm)
         {
             decimal startingBalance = Balance;
             int quartersDue = 0;
@@ -124,25 +143,10 @@ namespace Capstone
             }
             Console.WriteLine($"Here is your change: {quartersDue} Quarters, {dimesDue} Dimes, {nickelsDue} Nickels");
 
-            WriteLog.PrintGiveChangeLine(startingBalance);
+            WriteLog.PrintGiveChangeLine(vm, startingBalance);
         }
 
-        public void PrintAllItemsInfo()
-        {
-            foreach (KeyValuePair<string, Slot> kvp in CurrentStock)
-            {
-                if (kvp.Value.SlotStock == 0)
-                {
-                    Console.WriteLine($"{kvp.Key} {kvp.Value.SlotItem.ProductName} {kvp.Value.SlotItem.Price} {kvp.Value.SlotItem.Type} SOLD OUT ");
-                }
-                else
-                {
-                    Console.WriteLine($"{kvp.Key} {kvp.Value.SlotItem.ProductName} {kvp.Value.SlotItem.Price} {kvp.Value.SlotItem.Type} {kvp.Value.SlotStock}");
-                }
-            }
-        }
-
-        public void FeedMoney()
+        public void FeedMoney(VendingMachine vm)
         {
             string input = "";
             int moneyFed = 0;
@@ -158,7 +162,7 @@ namespace Capstone
                     startingBalance = Balance;
                     moneyFed += int.Parse(input); // exception 
                     Balance += moneyFed;
-                    WriteLog.PrintFeedMoneyLine(startingBalance);
+                    WriteLog.PrintFeedMoneyLine(vm, startingBalance, Balance);
                 }
                 else
                 {
@@ -167,14 +171,14 @@ namespace Capstone
             }
         }
 
-        public void Dispense(string slotID)
+        public void Dispense(VendingMachine vm, string slotID)
         {
             decimal startingBalance = Balance;
             // We will decrement the item stock by 1
             CurrentStock[slotID].SlotStock--;
             // We will decrement the balance by item price
             Balance -= CurrentStock[slotID].SlotItem.Price;
-            WriteLog.PrintDispenseItemLine(startingBalance, slotID);
+            WriteLog.PrintDispenseItemLine(vm, startingBalance, slotID);
         }
     }
 

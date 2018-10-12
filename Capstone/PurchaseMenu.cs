@@ -7,8 +7,8 @@ namespace Capstone
     public class PurchaseMenu
     {
         private VendingMachine vm;
-        private Customer customer;
-        private VendingMachineItem itemToComsume;
+        private Customer Customer = new Customer();
+        private VendingMachineItem itemToConsume;
 
         public PurchaseMenu(VendingMachine vm)
         {
@@ -31,24 +31,25 @@ namespace Capstone
                 if (input == "1")
                 {
                     Console.WriteLine(""); // Feeding Money
-                    vm.FeedMoney();
+                    vm.FeedMoney(vm);
                 }
                 else if (input == "2")
-                {
+                { 
                     Console.WriteLine(""); // Selecting Product
                     string slotID = vm.SelectProduct();
-                    itemToComsume = vm.CurrentStock[slotID].SlotItem;
-                    vm.Dispense(slotID);
+                    itemToConsume = vm.CurrentStock[slotID].SlotItem;
+                    vm.Dispense(vm, slotID);
                 }
                 else if (input == "3")
                 {
-                    Console.WriteLine(""); // Finishing Transaction
-                    vm.GiveChange();
-                    customer.Consume(itemToComsume.Type);
                     
+                    Console.WriteLine(""); // Finishing Transaction
+                    vm.GiveChange(vm);
+                    Customer.Consume(itemToConsume.Type);
+
                 }
                 
-                else if (input == "Q")
+                else if (input.ToUpper() == "Q")
                 {
                     Console.WriteLine("Returning to main menu");
                     break;

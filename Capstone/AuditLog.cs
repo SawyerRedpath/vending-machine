@@ -8,12 +8,12 @@ namespace Capstone
     public class AuditLog
     {
         private const string logFile = "Log.txt";
+        
+        //private string lineToPrint = "";
 
-        private string lineToPrint = "";
+    
 
-        private VendingMachine vm;
-
-        public void PrintFeedMoneyLine (decimal startingBalance)
+        public void PrintFeedMoneyLine (VendingMachine vm, decimal startingBalance, decimal finalBalance)
         {
             string actionDone = "FEED MONEY:";
             using (StreamWriter sw = new StreamWriter(logFile, true))
@@ -23,7 +23,7 @@ namespace Capstone
 
         }
 
-        public void PrintGiveChangeLine (decimal startingBalance)
+        public void PrintGiveChangeLine (VendingMachine vm, decimal startingBalance)
         {
             string actionDone = "GIVE CHANGE";
             using (StreamWriter sw = new StreamWriter(logFile, true))
@@ -32,7 +32,7 @@ namespace Capstone
             }
         }
 
-        public void PrintDispenseItemLine(decimal startingBalance, string slotID)
+        public void PrintDispenseItemLine(VendingMachine vm, decimal startingBalance, string slotID)
         {
             string actionDone = vm.CurrentStock[slotID].SlotItem.ProductName + " " + slotID;
             using (StreamWriter sw = new StreamWriter(logFile, true))
