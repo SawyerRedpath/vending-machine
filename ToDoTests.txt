@@ -1,8 +1,5 @@
 Unit Tests:
 
 Vending Machine
-	- verifyProductCodeExists
-	- verifyProductNotSoldOut
-	- GiveChange
 	- Dispense (maybe)
-	- IsDigitsOnly
+
